@@ -1,13 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="report.js" defer></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Oil Analysis Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1, h3 {
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .pass {
+            color: green;
+            font-weight: bold;
+        }
+        .fail {
+            color: red;
+            font-weight: bold;
+        }
+        .caution {
+            color: orange;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-    <h1>Welcome to the Oil Analysis Report</h1>
-    <p>This is a placeholder for the oil analysis report page.</p>
+    <h1>Oil Sample Analysis Report</h1>
+    <div id="report">
+        <!-- This section will be populated by JavaScript -->
+    </div>
+    <script>
+        // Report data
+        const reportData = {
+            client: "DEMONSTRATION REPORT",
+            siteArea: "Generator Transformer",
+            compartment: "TRF-1",
+            makeModel: "CAT 3412 Engine",
+            oilCapacity: "70 Litres",
+            reportNo: "67504",
+            class: "3",
+            condition: "GOOD",
+            attention: "WATCH",
+            tests: [
+                { name: "Dielectric BDV", standard: "ASTM D1816", result: "PASS" },
+                { name: "Interfacial Tension", standard: "ASTM D971", result: "PASS" },
+                { name: "Specific Gravity", standard: "ASTM D1298", result: "PASS" },
+                { name: "Acid Number", standard: "ASTM D664", result: "CAUTION" },
+                { name: "Moisture Content", standard: "ASTM D1533", result: "FAIL" },
+                { name: "Color", standard: "ASTM D1500", result: "PASS" },
+                { name: "Dissolved Gases", standard: "ASTM D3612", result: "PASS" },
+                { name: "Furans", standard: "HPLC", result: "PASS" },
+            ],
+            comments: [
+                "Dielectric breakdown voltage remains within acceptable limits.",
+                "Moisture content exceeds recommended levels and may affect insulating properties.",
+                "Acid number is high, indicating degradation of oil.",
+                "No significant dissolved gas anomalies detected.",
+            ],
+        };
+
+        // Function to generate the report
+        const generateReport = (data) => {
+            let html = `
+                <p><strong>Client:</strong> ${data.client}</p>
+                <p><strong>Site Area:</strong> ${data.siteArea} | <strong>Compartment:</strong> ${data.compartment}</p>
+                <p><strong>Make/Model:</strong> ${data.makeModel} | <strong>Oil Capacity:</strong> ${data.oilCapacity}</p>
+                <p><strong>Report No:</strong> ${data.reportNo} | <strong>Class:</strong> ${data.class}</p>
+                <h3>Test Results:</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Test</th>
+                            <th>Standard</th>
+                            <th>Result</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${data.tests.map(test => `
+                            <tr>
+                                <td>${test.name}</td>
+                                <td>${test.standard}</td>
+                                <td class="${test.result.toLowerCase()}">${test.result}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+                <h3>Comments:</h3>
+                <ul>
+                    ${data.comments.map(comment => `<li>${comment}</li>`).join('')}
+                </ul>
+            `;
+            document.getElementById("report").innerHTML = html;
+        };
+
+        // Generate and display the report
+        generateReport(reportData);
+    </script>
 </body>
 </html>
